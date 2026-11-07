@@ -10,7 +10,7 @@ CREATE TABLE videojuego (
     codigo            INT          AUTO_INCREMENT PRIMARY KEY,
     titulo            VARCHAR(100) NOT NULL,
     precio            DOUBLE       NOT NULL,
-    stock             DOUBLE       NOT NULL,
+    stock             INT       NOT NULL,
     codigo_plataforma INT          NOT NULL,
 
     CONSTRAINT fk_videojuego_plataforma

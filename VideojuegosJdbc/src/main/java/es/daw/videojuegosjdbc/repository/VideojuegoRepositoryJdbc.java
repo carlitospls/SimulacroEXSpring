@@ -19,7 +19,7 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     // SELECT común a findById y findAll (JOIN para traer también el nombre de la plataforma)
     private static final String SELECT_BASE = """
-            SELECT v.codigo, v.titulo, v.precio,
+            SELECT v.codigo, v.titulo, v.precio, v.stock,
                    p.codigo AS p_codigo, p.nombre AS p_nombre
             FROM videojuego v
             JOIN plataforma p ON v.codigo_plataforma = p.codigo

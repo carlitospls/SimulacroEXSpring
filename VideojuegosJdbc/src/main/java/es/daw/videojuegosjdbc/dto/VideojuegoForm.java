@@ -2,10 +2,7 @@ package es.daw.videojuegosjdbc.dto;
 
 import es.daw.videojuegosjdbc.model.Plataforma;
 import es.daw.videojuegosjdbc.model.Videojuego;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +24,8 @@ public class VideojuegoForm {
     @Positive(message = "El precio debe ser mayor que 0")
     private Double precio;
 
-    //no se si colocar aqui algo realmente
+    @NotNull(message = "El stock es obligatorio")
+    @PositiveOrZero(message = "El stock no puede ser negativo")
     private Integer stock;
 
 
