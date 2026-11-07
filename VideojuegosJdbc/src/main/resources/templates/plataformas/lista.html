@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Plataformas')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="contenedor estrecho">
+    <h1>Plataformas</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${plataformas}">
+            <td th:text="${p.codigo}">1</td>
+            <td th:text="${p.nombre}">Nombre</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Fragmento 1: <head> común. Recibe el título de la página -->
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · GameStore'">GameStore</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body>
+
+<!-- Fragmento 2: barra de navegación -->
+<nav th:fragment="navbar" class="navbar">
+    <a class="marca" th:href="@{/}">🎮 GameStore</a>
+    <a th:href="@{/videojuegos}">Videojuegos</a>
+    <a th:href="@{/plataformas}">Plataformas</a>
+</nav>
+
+<!-- Fragmento 3: mensajes flash tras un redirect -->
+<div th:fragment="alertas">
+    <div th:if="${mensaje}" class="alerta ok" th:text="${mensaje}">Mensaje</div>
+    <div th:if="${error}" class="alerta ko" th:text="${error}">Error</div>
+</div>
+
+</body>
+</html>

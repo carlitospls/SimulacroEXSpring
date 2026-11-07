@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="contenedor">
+    <h1>GameStore</h1>
+    <p class="suave">Gestión de videojuegos y plataformas</p>
+    <div class="tarjetas">
+        <a class="tarjeta" th:href="@{/videojuegos}">
+            <h2>Videojuegos</h2>
+            <p>Consulta, añade, edita o borra videojuegos.</p>
+        </a>
+        <a class="tarjeta" th:href="@{/plataformas}">
+            <h2>Plataformas</h2>
+            <p>Lista de plataformas disponibles.</p>
+        </a>
+    </div>
+</main>
+</body>
+</html>

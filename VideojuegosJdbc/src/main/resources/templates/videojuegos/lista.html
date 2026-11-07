@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Videojuegos')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="contenedor">
+    <div class="cabecera">
+        <h1>Videojuegos</h1>
+        <a th:href="@{/videojuegos/nuevo}" class="boton verde">+ Añadir videojuego</a>
+    </div>
+
+    <div th:replace="~{fragments/layout :: alertas}"></div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Título</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Plataforma</th>
+            <th>Editar</th>
+            <th>Borrar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(videojuegos)}">
+            <td colspan="6" class="suave">No hay videojuegos</td>
+        </tr>
+        <tr th:each="v : ${videojuegos}">
+            <td th:text="${v.codigo}">1</td>
+            <td th:text="${v.titulo}">Título</td>
+            <td th:text="${#numbers.formatDecimal(v.precio, 1, 2, 'POINT')} + ' €'">0.00</td>
+            <td th:text="${v.stock}">Stock</td>
+            <td th:text="${v.plataforma.nombre}">Plataforma</td>
+            <td>
+                <a th:href="@{/videojuegos/editar/{codigo}(codigo=${v.codigo})}" class="boton amarillo">Editar</a>
+            </td>
+            <td>
+                <form th:action="@{/videojuegos/borrar/{codigo}(codigo=${v.codigo})}" method="post"
+                      onsubmit="return confirm('¿Seguro que quieres borrar este videojuego?');">
+                    <button type="submit" class="boton rojo">Borrar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

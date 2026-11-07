@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Error')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="contenedor estrecho">
+    <div class="alerta ko">
+        <h2 th:text="${titulo} ?: (${status} + ' ' + ${error})">Error</h2>
+        <p th:text="${mensaje} ?: 'Se ha producido un error inesperado.'">Detalle</p>
+    </div>
+    <a th:href="@{/}" class="boton gris">Volver al inicio</a>
+</main>
+</body>
+</html>

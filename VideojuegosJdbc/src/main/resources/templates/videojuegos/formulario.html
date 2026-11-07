@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Videojuego')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+
+<main class="contenedor estrecho">
+    <h1 th:text="${videojuegoForm.codigo == null} ? 'Nuevo videojuego' : ('Editar videojuego ' + ${videojuegoForm.codigo})">
+        Videojuego
+    </h1>
+
+    <form th:action="@{/videojuegos/guardar}" th:object="${videojuegoForm}" method="post" class="formulario" novalidate>
+
+        <input type="hidden" th:field="*{codigo}">
+
+        <div class="campo">
+            <label for="titulo">Título</label>
+            <input type="text" th:field="*{titulo}" th:classappend="${#fields.hasErrors('titulo')} ? 'invalido'">
+            <div class="error" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}">Error</div>
+        </div>
+
+        <div class="campo">
+            <label for="precio">Precio (€)</label>
+            <input type="number" step="0.01" th:field="*{precio}" th:classappend="${#fields.hasErrors('precio')} ? 'invalido'">
+            <div class="error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Error</div>
+        </div>
+
+        <div class="campo">
+            <label for="codigoPlataforma">Plataforma</label>
+            <select th:field="*{codigoPlataforma}" th:classappend="${#fields.hasErrors('codigoPlataforma')} ? 'invalido'">
+                <option value="">-- Selecciona una plataforma --</option>
+                <option th:each="p : ${plataformas}" th:value="${p.codigo}" th:text="${p.nombre}">Plataforma</option>
+            </select>
+            <div class="error" th:if="${#fields.hasErrors('codigoPlataforma')}" th:errors="*{codigoPlataforma}">Error</div>
+        </div>
+
+        <div class="acciones">
+            <button type="submit" class="boton azul">Guardar</button>
+            <a th:href="@{/videojuegos}" class="boton gris">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>
