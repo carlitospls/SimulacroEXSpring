@@ -59,12 +59,13 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     @Override
     public void save(Videojuego videojuego) {
-        String sql = "INSERT INTO videojuego (titulo, precio, codigo_plataforma) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO videojuego (titulo, precio, stock, codigo_plataforma) VALUES (?, ?, ?, ?)";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, videojuego.getTitulo());
             ps.setDouble(2, videojuego.getPrecio());
-            ps.setInt(3, videojuego.getPlataforma().getCodigo());
+            ps.setInt(3, videojuego.getStock());
+            ps.setInt(4, videojuego.getPlataforma().getCodigo());
             ps.executeUpdate();
             try (ResultSet claves = ps.getGeneratedKeys()) {
                 if (claves.next()) {
@@ -78,13 +79,14 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     @Override
     public void update(Videojuego videojuego) {
-        String sql = "UPDATE videojuego SET titulo = ?, precio = ?, codigo_plataforma = ? WHERE codigo = ?";
+        String sql = "UPDATE videojuego SET titulo = ?, precio = ?, stock = ?, codigo_plataforma = ? WHERE codigo = ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, videojuego.getTitulo());
             ps.setDouble(2, videojuego.getPrecio());
-            ps.setInt(3, videojuego.getPlataforma().getCodigo());
-            ps.setInt(4, videojuego.getCodigo());
+            ps.setInt(3, videojuego.getStock());
+            ps.setInt(4, videojuego.getPlataforma().getCodigo());
+            ps.setInt(5, videojuego.getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new AccesoDatosException("Error al actualizar el videojuego " + videojuego.getCodigo(), e);

@@ -38,6 +38,7 @@ public class VideojuegoForm {
         form.setCodigo(v.getCodigo());
         form.setTitulo(v.getTitulo());
         form.setPrecio(v.getPrecio());
+        form.setStock(v.getStock());
         form.setCodigoPlataforma(v.getPlataforma().getCodigo());
         return form;
     }

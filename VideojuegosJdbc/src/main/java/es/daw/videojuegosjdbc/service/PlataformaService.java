@@ -14,6 +14,7 @@ public class PlataformaService {
     private final PlataformaRepository plataformaRepository;
 
     public List<Plataforma> listar() {
+
         return plataformaRepository.findAll();
     }
 }
