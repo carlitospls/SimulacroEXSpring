@@ -19,7 +19,7 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     // SELECT común a findById y findAll (JOIN para traer también el nombre de la plataforma)
     private static final String SELECT_BASE = """
-            SELECT v.codigo, v.titulo, v.precio, v.stock,
+            SELECT v.codigo, v.titulo, v.precio, v.stock, v.pegi,
                    p.codigo AS p_codigo, p.nombre AS p_nombre
             FROM videojuego v
             JOIN plataforma p ON v.codigo_plataforma = p.codigo
@@ -59,13 +59,14 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     @Override
     public void save(Videojuego videojuego) {
-        String sql = "INSERT INTO videojuego (titulo, precio, stock, codigo_plataforma) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO videojuego (titulo, precio, stock, pegi, codigo_plataforma) VALUES (?, ?, ?, ?, ?)";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, videojuego.getTitulo());
             ps.setDouble(2, videojuego.getPrecio());
             ps.setInt(3, videojuego.getStock());
-            ps.setInt(4, videojuego.getPlataforma().getCodigo());
+            ps.setInt(4, videojuego.getPegi());
+            ps.setInt(5, videojuego.getPlataforma().getCodigo());
             ps.executeUpdate();
             try (ResultSet claves = ps.getGeneratedKeys()) {
                 if (claves.next()) {
@@ -79,14 +80,15 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
 
     @Override
     public void update(Videojuego videojuego) {
-        String sql = "UPDATE videojuego SET titulo = ?, precio = ?, stock = ?, codigo_plataforma = ? WHERE codigo = ?";
+        String sql = "UPDATE videojuego SET titulo = ?, precio = ?, stock = ?, pegi = ?, codigo_plataforma = ? WHERE codigo = ?";
         try (Connection con = dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, videojuego.getTitulo());
             ps.setDouble(2, videojuego.getPrecio());
             ps.setInt(3, videojuego.getStock());
-            ps.setInt(4, videojuego.getPlataforma().getCodigo());
-            ps.setInt(5, videojuego.getCodigo());
+            ps.setInt(4, videojuego.getPegi());
+            ps.setInt(5, videojuego.getPlataforma().getCodigo());
+            ps.setInt(6, videojuego.getCodigo());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new AccesoDatosException("Error al actualizar el videojuego " + videojuego.getCodigo(), e);
@@ -131,6 +133,7 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
                 rs.getString("titulo"),
                 rs.getDouble("precio"),
                 rs.getInt("stock"),
+                rs.getInt("pegi"),
                 plataforma);
     }
 }

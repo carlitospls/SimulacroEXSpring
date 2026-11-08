@@ -11,6 +11,7 @@ CREATE TABLE videojuego (
     titulo            VARCHAR(100) NOT NULL,
     precio            DOUBLE       NOT NULL,
     stock             INT       NOT NULL,
+    pegi              INT       NOT NULL,
     codigo_plataforma INT          NOT NULL,
 
     CONSTRAINT fk_videojuego_plataforma

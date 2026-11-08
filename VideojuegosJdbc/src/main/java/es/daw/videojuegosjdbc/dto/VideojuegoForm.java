@@ -28,6 +28,11 @@ public class VideojuegoForm {
     @PositiveOrZero(message = "El stock no puede ser negativo")
     private Integer stock;
 
+    @NotNull(message = "PEGI es obligatorio")
+    @Min(value = 3, message = "El PEGI debe estar entre 3 y 18")
+    @Max(value = 18, message = "El PEGI debe estar entre 3 y 18")
+    private Integer pegi;
+
 
     @NotNull(message = "Selecciona una plataforma")
     private Integer codigoPlataforma;
@@ -46,6 +51,6 @@ public class VideojuegoForm {
     /** Formulario → Videojuego (modelo). De la plataforma solo tenemos el código. */
     public Videojuego toModelEntity() {
         Plataforma plataforma = new Plataforma(codigoPlataforma, null);
-        return new Videojuego(codigo, titulo, precio, stock, plataforma);
+        return new Videojuego(codigo, titulo, precio, stock, pegi, plataforma);
     }
 }

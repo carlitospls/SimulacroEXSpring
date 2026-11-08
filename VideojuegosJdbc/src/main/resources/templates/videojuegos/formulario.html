@@ -40,6 +40,12 @@
             <div class="error" th:if="${#fields.hasErrors('codigoPlataforma')}" th:errors="*{codigoPlataforma}">Error</div>
         </div>
 
+        <div class="campo">
+            <label for="pegi">PEGI</label>
+            <input type="number" th:field="*{pegi}" th:classappend="${#fields.hasErrors('pegi')} ? 'invalido'">
+            <div class="error" th:if="${#fields.hasErrors('pegi')}" th:errors="*{pegi}">Error</div>
+        </div>
+
         <div class="acciones">
             <button type="submit" class="boton azul">Guardar</button>
             <a th:href="@{/videojuegos}" class="boton gris">Cancelar</a>

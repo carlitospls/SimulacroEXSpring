@@ -17,5 +17,6 @@ public class Videojuego {
     private String titulo;
     private double precio;
     private Integer stock;
+    private Integer pegi;
     private Plataforma plataforma;
 }
