@@ -19,6 +19,7 @@ public class VideojuegoService {
     private final PlataformaRepository plataformaRepository;
 
     public List<Videojuego> listar() {
+        
         return videojuegoRepository.findAll();
     }
 

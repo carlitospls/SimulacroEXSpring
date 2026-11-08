@@ -26,6 +26,12 @@
         </div>
 
         <div class="campo">
+            <label for="stock">Stock</label>
+            <input type="number" step="1" th:field="*{stock}" th:classappend="${#fields.hasErrors('stock')} ? 'invalido'">
+            <div class="error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}">Error</div>
+        </div>
+
+        <div class="campo">
             <label for="codigoPlataforma">Plataforma</label>
             <select th:field="*{codigoPlataforma}" th:classappend="${#fields.hasErrors('codigoPlataforma')} ? 'invalido'">
                 <option value="">-- Selecciona una plataforma --</option>
