@@ -1,6 +1,7 @@
 package es.daw.videojuegosjdbc.service;
 
 import es.daw.videojuegosjdbc.exception.RecursoNoEncontradoException;
+import es.daw.videojuegosjdbc.exception.TituloDuplicadoException;
 import es.daw.videojuegosjdbc.model.Plataforma;
 import es.daw.videojuegosjdbc.model.Videojuego;
 import es.daw.videojuegosjdbc.repository.PlataformaRepository;
@@ -30,6 +31,10 @@ public class VideojuegoService {
     }
 
     public Videojuego crear(Videojuego videojuego) {
+
+        if (videojuegoRepository.findById(videojuego.getCodigo()).isPresent()) {
+            throw new TituloDuplicadoException(videojuego.getCodigo().toString());
+        }
         prepararParaGuardar(videojuego);
         videojuegoRepository.save(videojuego);
         return videojuego;

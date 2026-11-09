@@ -1,6 +1,7 @@
 package es.daw.videojuegosjdbc.controller;
 
 import es.daw.videojuegosjdbc.dto.VideojuegoForm;
+import es.daw.videojuegosjdbc.exception.TituloDuplicadoException;
 import es.daw.videojuegosjdbc.model.Videojuego;
 import es.daw.videojuegosjdbc.service.PlataformaService;
 import es.daw.videojuegosjdbc.service.VideojuegoService;
@@ -59,9 +60,13 @@ public class VideojuegoController {
             redirectAttributes.addFlashAttribute("mensaje",
                     "Videojuego creado con código " + creado.getCodigo());
         } else {
-            videojuegoService.actualizar(videojuegoForm.toModelEntity());
-            redirectAttributes.addFlashAttribute("mensaje",
-                    "Videojuego " + videojuegoForm.getCodigo() + " actualizado");
+            try {
+                videojuegoService.actualizar(videojuegoForm.toModelEntity());
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "Videojuego " + videojuegoForm.getCodigo() + " actualizado");
+            }catch (TituloDuplicadoException e) {
+                result.rejectValue("codigo", "Videojuego.codigo.duplicado");
+            }
         }
         return "redirect:/videojuegos";
     }
