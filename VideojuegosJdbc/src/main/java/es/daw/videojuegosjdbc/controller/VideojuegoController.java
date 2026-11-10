@@ -55,19 +55,25 @@ public class VideojuegoController {
             return "videojuegos/formulario";
         }
 
-        if (videojuegoForm.getCodigo() == null) {
-            Videojuego creado = videojuegoService.crear(videojuegoForm.toModelEntity());
-            redirectAttributes.addFlashAttribute("mensaje",
-                    "Videojuego creado con código " + creado.getCodigo());
-        } else {
-            try {
+        // RETO 3: un solo try para alta y edición (las dos pueden lanzar la misma excepción).
+        try {
+            if (videojuegoForm.getCodigo() == null) {
+                Videojuego creado = videojuegoService.crear(videojuegoForm.toModelEntity());
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "Videojuego creado con código " + creado.getCodigo());
+            } else {
                 videojuegoService.actualizar(videojuegoForm.toModelEntity());
                 redirectAttributes.addFlashAttribute("mensaje",
                         "Videojuego " + videojuegoForm.getCodigo() + " actualizado");
-            }catch (TituloDuplicadoException e) {
-                result.rejectValue("codigo", "Videojuego.codigo.duplicado");
             }
+        } catch (TituloDuplicadoException e) {
+            // Error en el campo "titulo" con mensaje por defecto (no hay messages.properties).
+            // th:errors="*{titulo}" del formulario lo pinta solo.
+            result.rejectValue("titulo", "titulo.duplicado", e.getMessage());
+            model.addAttribute("plataformas", plataformaService.listar());   // el <select> lo necesita
+            return "videojuegos/formulario";                                 // volver con lo escrito
         }
+
         return "redirect:/videojuegos";
     }
 

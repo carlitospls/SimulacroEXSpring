@@ -20,7 +20,6 @@ public class VideojuegoService {
     private final PlataformaRepository plataformaRepository;
 
     public List<Videojuego> listar() {
-        
         return videojuegoRepository.findAll();
     }
 
@@ -30,12 +29,14 @@ public class VideojuegoService {
                         "No existe el videojuego con código " + codigo));
     }
 
+    // RETO 3: la regla va DESPUÉS de prepararParaGuardar (que recorta espacios del título)
+    //         y ANTES de save/update (para no guardar nada si falla).
     public Videojuego crear(Videojuego videojuego) {
-
-        if (videojuegoRepository.findById(videojuego.getCodigo()).isPresent()) {
-            throw new TituloDuplicadoException(videojuego.getCodigo().toString());
-        }
         prepararParaGuardar(videojuego);
+        if (videojuegoRepository.existsByTituloIgnoreCaseAndPlataformaCodigo(
+                videojuego.getTitulo(), videojuego.getPlataforma().getCodigo())) {
+            throw new TituloDuplicadoException();
+        }
         videojuegoRepository.save(videojuego);
         return videojuego;
     }
@@ -43,6 +44,11 @@ public class VideojuegoService {
     public Videojuego actualizar(Videojuego videojuego) {
         buscarPorCodigo(videojuego.getCodigo());
         prepararParaGuardar(videojuego);
+        // En edición se excluye al propio videojuego (si no, chocaría consigo mismo)
+        if (videojuegoRepository.existsByTituloIgnoreCaseAndPlataformaCodigoAndCodigoNot(
+                videojuego.getTitulo(), videojuego.getPlataforma().getCodigo(), videojuego.getCodigo())) {
+            throw new TituloDuplicadoException();
+        }
         videojuegoRepository.update(videojuego);
         return videojuego;
     }

@@ -122,6 +122,41 @@ public class VideojuegoRepositoryJdbc implements VideojuegoRepository {
         }
     }
 
+    // RETO 3 (alta): copia de existsByPlataformaCodigo con una condición más.
+    // LOWER(...) en los dos lados = comparar sin distinguir mayúsculas ("astro bot" choca con "Astro Bot").
+    @Override
+    public boolean existsByTituloIgnoreCaseAndPlataformaCodigo(String titulo, Integer codigoPlataforma) {
+        String sql = "SELECT 1 FROM videojuego WHERE LOWER(titulo) = LOWER(?) AND codigo_plataforma = ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, titulo);
+            ps.setInt(2, codigoPlataforma);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new AccesoDatosException("Error al comprobar si existe el videojuego '" + titulo + "'", e);
+        }
+    }
+
+    // RETO 3 (edición): la misma consulta + "AND codigo <> ?" para no chocar con el propio videojuego.
+    @Override
+    public boolean existsByTituloIgnoreCaseAndPlataformaCodigoAndCodigoNot(String titulo, Integer codigoPlataforma,
+                                                                           Integer codigo) {
+        String sql = "SELECT 1 FROM videojuego WHERE LOWER(titulo) = LOWER(?) AND codigo_plataforma = ? AND codigo <> ?";
+        try (Connection con = dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, titulo);
+            ps.setInt(2, codigoPlataforma);
+            ps.setInt(3, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new AccesoDatosException("Error al comprobar si existe el videojuego '" + titulo + "'", e);
+        }
+    }
+
     // Fila del ResultSet → objeto Videojuego
     private Videojuego mapRow(ResultSet rs) throws SQLException {
         Plataforma plataforma = new Plataforma(
